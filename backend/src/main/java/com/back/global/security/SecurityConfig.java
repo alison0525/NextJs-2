@@ -26,10 +26,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers("/favicon.ico").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/*/posts", "/api/*/posts/{id:\\d+}",
                                 "/api/*/posts/{postId:\\d+}/comments", "/api/*/posts/{postId:\\d+}/comments/{commentId:\\d+}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/members/login", "/api/v1/members/join").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/members/logout").permitAll()
+                        .requestMatchers("/").permitAll()
                         .requestMatchers("/api/v1/adm/**").hasRole("ADMIN")
                         .requestMatchers("/api/*/**").authenticated()
                         .anyRequest().authenticated())
@@ -41,7 +43,7 @@ public class SecurityConfig {
                 .exceptionHandling(
                 exceptionHandling -> exceptionHandling
                                 .authenticationEntryPoint((request, response, authenticationException) -> {
-                                    response.setContentType("application/json");
+                                    response.setContentType("application/json;charset=UTF-8");
                                     response.setStatus(401);
                                     response.getWriter().write(
                                             """
@@ -52,7 +54,7 @@ public class SecurityConfig {
                                                     """);
                                 })
                                 .accessDeniedHandler((request, response, accessDeniedException) -> {
-                                            response.setContentType("application/json");
+                                            response.setContentType("application/json;charset=UTF-8");
                                             response.setStatus(403);
                                             response.getWriter().write(
                                                     """
