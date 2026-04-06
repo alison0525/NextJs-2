@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
+import ClientLayout from "./ClientLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,20 +24,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased border-2 border-black min-h-screen flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} 
+        antialiased min-h-screen flex flex-col 
+        `}
       >
-        <header>
-          <nav className="flex gap-4">
-            <Link href="/">메인</Link>
-            <Link href="/posts">목록</Link>
-          </nav>
-        </header>
-        <main className="flex-grow flex justify-center items-center flex-col gap-4">
-          {children}
-        </main>
-        <footer>푸터</footer>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
